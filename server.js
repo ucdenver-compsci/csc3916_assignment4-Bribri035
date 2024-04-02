@@ -112,7 +112,7 @@ router.route('/movies')
             res = res.type(req.get('Content-Type'));
         }
         var o = getJSONObjectForMovieRequirement(req);
-        if (o.actors=="") {
+        if (o.body.actors=="") {
             return res.status(400).send({success: false, msg: 'Movie needs actors'});
         }
         else{
@@ -149,13 +149,11 @@ router.route('/movies')
             o.message = "movie deleted";
             res.json(o);
 
-        }
+        })
 
         
         
-    }
-
-    )
+    })
     .put(authJwtController.isAuthenticated, (req, res) => {
         console.log(req.body);
         //es = res.status(200);
@@ -195,6 +193,62 @@ router.route('/movies')
         res.status(405).send({ message: "HTTP method not supported."});
     })
     ;
+
+router.route('/reviews')
+    .get((req,res) => {
+        //console.log(req.body);
+        //es = res.status(200);
+        Reviews.find({}, function(err, reviews){
+        if (err) throw err;
+            reviews.status = 200;
+            
+            res.json(reviews);
+
+        });
+        
+    });
+
+    .post(authJwtController.isAuthenticated, (req, res) => {
+
+        var o = getJSONObjectForMovieRequirement(req);
+        if (o.body.movieId=="") {
+            return res.status(400).send({success: false, msg: 'review needs a movie ID'});
+        }
+        else if (o.body.rating=="" or o.body.rating < 0 or o.body.rating > 5) {
+            return res.status(400).send({success: false, msg: 'Review needs rating 0-5'});
+        }
+        else{
+            var review = new Reviews();
+            
+            review.movieId = o.body.movieId;
+            review.username = o.body.username;
+            review.review = o.body.review;
+            review.rating = o.body.rating;
+
+            move.save(function(err){
+                if (err) {
+                        return res.json(err);
+                }
+            })
+            
+            o.status = 200;
+            o.message = 'Review created!';
+            o.query = o.body;
+            //o.env = o.key;
+            res.json(o);
+        }
+    })
+
+    
+    
+    
+    .all((req, res) => {
+        res.status(405).send({ message: "HTTP method not supported."});
+    });
+
+
+
+
 
 app.use('/', router);
 app.listen(process.env.PORT || 8080);
