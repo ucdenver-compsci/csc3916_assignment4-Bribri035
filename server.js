@@ -95,16 +95,14 @@ router.route('/movies')
             res = res.type(req.get('Content-Type'));
         }
         Movie.find({}, function(err, movies){
-        if (err) throw err;
-            //console.log(movies);
+            if (err) throw err;
+            console.log(movies);
             movies.status = 200;
                 
             res.json(movies);
 
-        });
-        
-    }
-    )
+        })
+        })
     .post(authJwtController.isAuthenticated, (req,res) => {
         //console.log(req.body);
         //es = res.status(200);
@@ -126,8 +124,7 @@ router.route('/movies')
                 if (err) {
                         return res.json(err);
                 }
-            });
-
+            });            
             o.status = 200;
             o.message = "movie saved";
             o.query = o.body;
@@ -206,7 +203,7 @@ router.route('/reviews')
 
         });
         
-    });
+    })
 
     .post(authJwtController.isAuthenticated, (req, res) => {
 
@@ -214,7 +211,7 @@ router.route('/reviews')
         if (o.body.movieId=="") {
             return res.status(400).send({success: false, msg: 'review needs a movie ID'});
         }
-        else if (o.body.rating=="" or o.body.rating < 0 or o.body.rating > 5) {
+        else if (o.body.rating=="" || o.body.rating < 0 || o.body.rating > 5) {
             return res.status(400).send({success: false, msg: 'Review needs rating 0-5'});
         }
         else{

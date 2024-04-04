@@ -1,10 +1,15 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-mongoose.connect(process.env.DB);
+try {
+    mongoose.connect( process.env.DB, {useNewUrlParser: true, useUnifiedTopology: true}, () =>
+        console.log("connected"));
+}catch (error) {
+    console.log("could not connect");
+}
 
 // Movie schema
-const reviewSchema = new mongoose.Schema({
+const ReviewSchema = new mongoose.Schema({
     movieId: { type: mongoose.Schema.Types.ObjectId, ref: 'Movie' },
     username: String,
     review: String,
