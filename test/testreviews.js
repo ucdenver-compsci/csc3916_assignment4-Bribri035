@@ -31,9 +31,9 @@ describe('Test Review Routes', () => {
             if (err) throw err;
         });
        
-        Movie.deleteOne({ title: 'Alice in Wonderland'}, function(err, movie) {
-            if (err) throw err;
-        });
+        //Movie.deleteOne({ title: 'Alice in Wonderland'}, function(err, movie) {
+            //if (err) throw err;
+        //});
 
         Review.deleteOne({ review: review_details.review }, function(err, review) {
             if (err) throw err;

@@ -96,7 +96,6 @@ router.route('/movies')
         }
         Movie.find({}, function(err, movies){
             if (err) throw err;
-            console.log(movies);
             movies.status = 200;
                 
             res.json(movies);
@@ -122,7 +121,7 @@ router.route('/movies')
 
             move.save(function(err){
                 if (err) {
-                        return res.json(err);
+                    return res.json(err);
                 }
             });            
             o.status = 200;
@@ -152,7 +151,7 @@ router.route('/movies')
         
     })
     .put(authJwtController.isAuthenticated, (req, res) => {
-        console.log(req.body);
+        //console.log(req.body);
         //es = res.status(200);
         if (req.get('Content-Type')) {
             res = res.type(req.get('Content-Type'));
@@ -215,14 +214,14 @@ router.route('/reviews')
             return res.status(400).send({success: false, msg: 'Review needs rating 0-5'});
         }
         else{
-            var review = new Reviews();
+            var review = new Review();
             
             review.movieId = o.body.movieId;
             review.username = o.body.username;
             review.review = o.body.review;
             review.rating = o.body.rating;
 
-            move.save(function(err){
+            review.save(function(err){
                 if (err) {
                         return res.json(err);
                 }
