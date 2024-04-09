@@ -169,9 +169,9 @@ router.route('/movies/:movieparameter')
                 {
                     $sort: { average_rating: -1 }
                 }
-            ])).exec(err, movies) =>{
+            ])).exec((err, movies) => {
                 res.json(movies)
-            }
+            })
         }
         
         else{
