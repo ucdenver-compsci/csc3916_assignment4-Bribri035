@@ -155,7 +155,7 @@ router.route('/movies/:movieparameter')
                     $lookup:{
                         from: 'Reviews',
                         localField: '_id',
-                        foreignField: 'movieId'
+                        foreignField: 'movieId',
                         as: 'reviews'
                     }
                 },
