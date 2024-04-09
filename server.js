@@ -132,6 +132,60 @@ router.route('/movies')
         }
     }    
     )
+    .all((req, res) => {
+        res.status(405).send({ message: "HTTP method not supported."});
+    })
+    ;
+
+router.route('/movies/:movieparameter')
+    .get(authJwtController.isAuthenticated, (req,res) => {
+        //console.log(req.body);
+        //es = res.status(200);
+        if (req.get('Content-Type')) {
+            res = res.type(req.get('Content-Type'));
+        }
+        var o = getJSONObjectForMovieRequirement(req);
+        
+        if (req.query.reviews == true){
+            Movies.aggregate(([
+                {
+                    $match: { _id: o.body.id}
+                },
+                {
+                    $lookup:{
+                        from: 'Reviews',
+                        localField: '_id',
+                        foreignField: 'movieId'
+                        as: 'reviews'
+                    }
+                },
+
+                {
+                    $addFields:{
+                        average_rating: { $avg: '$reviews.rating'}
+                    }
+                },
+
+                {
+                    $sort: { average_rating: -1 }
+                }
+            ])).exec(err, movies) =>{
+                res.json(movies)
+            }
+        }
+        
+        else{
+        Movie.find({title: o.body.title}, function(err, movies){
+            if (err) throw err;
+            movies.status = 200;
+                
+            res.json(movies);
+        
+        })
+    }
+    })
+
+
     .delete(authController.isAuthenticated, (req, res) => {
         //console.log(req.body);
         //es = res.status(200);
@@ -158,7 +212,7 @@ router.route('/movies')
         }
         var o = getJSONObjectForMovieRequirement(req);
 
-        Movies.findOnefindOne({ title:o.body.title }, function(err, movies){
+        Movies.findOne({ title:o.body.title }, function(err, movies){
             if (err) throw err;
             if (o.body.releaseDate){
                 movies.releaseDate = o.body.releaseDate;
