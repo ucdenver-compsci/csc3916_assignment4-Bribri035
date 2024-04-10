@@ -145,11 +145,50 @@ router.route('/movies/:movieparameter')
             res = res.type(req.get('Content-Type'));
         }
         var o = getJSONObjectForMovieRequirement(req);
-        
+        if (req.query.id){
         if (req.query.reviews == true){
             Movies.aggregate(([
                 {
                     $match: { _id: o.body.id}
+                },
+                {
+                    $lookup:{
+                        from: 'Reviews',
+                        localField: '_id',
+                        foreignField: 'movieId',
+                        as: 'reviews'
+                    }
+                },
+
+                {
+                    $addFields:{
+                        average_rating: { $avg: '$reviews.rating'}
+                    }
+                },
+
+                {
+                    $sort: { average_rating: -1 }
+                }
+            ])).exec((err, movies) => {
+                res.json(movies)
+            })
+        }
+        
+        else{
+        Movie.find({_id: o.body.id}, function(err, movies){
+            if (err) throw err;
+            movies.status = 200;
+                
+            res.json(movies);
+        
+        })
+    }
+}
+    else{
+        if (req.query.reviews == true){
+            Movies.aggregate(([
+                {
+                    $match: { title: o.body.title}
                 },
                 {
                     $lookup:{
@@ -182,6 +221,7 @@ router.route('/movies/:movieparameter')
             res.json(movies);
         
         })
+    }
     }
     })
 
