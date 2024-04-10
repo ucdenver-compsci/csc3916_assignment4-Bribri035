@@ -178,6 +178,9 @@ router.route('/movies/:title')
                     $sort: { average_rating: -1 }
                 }
             ])).exec((err, movies) => {
+                if (movies == []){
+                    res.json({success: false, msg: 'No movie by that name exists.', status: 404});
+                    }
                 res.json(movies)
             })
         }
@@ -185,6 +188,9 @@ router.route('/movies/:title')
         else{
         Movie.find({title: req.params.title}, function(err, movies){
             if (err) throw err;
+            if (movies == []){
+            res.json({success: false, msg: 'No movie by that name exists.', status: 404});
+            }
             movies.status = 200;
                 
             res.json(movies);
@@ -269,6 +275,9 @@ router.route('/movies/:id')
                     $sort: { average_rating: -1 }
                 }
             ])).exec((err, movies) => {
+                if (movies == []){
+                    res.json({success: false, msg: 'No movie by that id exists.', status: 404});
+                    }
                 res.json(movies)
             })
         }
@@ -276,6 +285,9 @@ router.route('/movies/:id')
         else{
         Movie.find({_id: req.params.id}, function(err, movies){
             if (err) throw err;
+            if (movies == []){
+                res.json({success: false, msg: 'No movie by that id exists.', status: 404});
+                }
             movies.status = 200;
                 
             res.json(movies);
