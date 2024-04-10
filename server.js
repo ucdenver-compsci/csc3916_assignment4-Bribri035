@@ -179,7 +179,7 @@ router.route('/movies/:title')
                 }
             ])).exec((err, movies) => {
                 if (movies.length==0){
-                    res.json({msg: 'No movie by that name exists.', status: 404});
+                    return res.status(404).send({success: false, msg: "No movie by that name exists."})
                     }
                 res.json(movies)
             })
@@ -189,7 +189,7 @@ router.route('/movies/:title')
         Movie.find({title: req.params.title}, function(err, movies){
             if (err) throw err;
             if (movies.length==0){
-                res.json({msg: 'No movie by that name exists.', status: 404});
+                    return res.status(404).send({success: false, msg: "No movie by that name exists."})
             }
             else{
                 movies.status = 200;
@@ -277,7 +277,7 @@ router.route('/movies/:id')
                 }
             ])).exec((err, movies) => {
                 if (movies.length==0){
-                    res.json({msg: 'No movie by that id exists.', status: 404});
+                    return res.status(404).send({success: false, msg: "No movie by that id exists."})
                     }
                 res.json(movies)
             })
@@ -287,7 +287,7 @@ router.route('/movies/:id')
         Movie.find({_id: req.params.id}, function(err, movies){
             if (err) throw err;
             if (movies.length==0){
-                res.json({msg: 'No movie by that id exists.', status: 404});
+                    return res.status(404).send({success: false, msg: "No movie by that id exists."})
                 }
             else{
                 movies.status = 200;
@@ -317,10 +317,16 @@ router.route('/reviews')
         if (o.body.movieId=="") {
             return res.status(400).send({success: false, msg: 'review needs a movie ID'});
         }
+        
         else if (o.body.rating=="" || o.body.rating < 0 || o.body.rating > 5) {
             return res.status(400).send({success: false, msg: 'Review needs rating 0-5'});
         }
         else{
+            movie = Movie.findOne(_id = o.body.movieId)
+                if (!movie){
+                    return res.status(404).send({success: false, msg: "Review must have a valid movie Id"})
+                }
+            
             var review = new Review();
             
             review.movieId = o.body.movieId;
