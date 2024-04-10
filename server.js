@@ -231,9 +231,6 @@ router.route('/movies/:title')
 
         })
     
-        
-    }
-    )
     .all((req, res) => {
         res.status(405).send({ message: "HTTP method not supported."});
     })
