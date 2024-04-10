@@ -323,31 +323,31 @@ router.route('/reviews')
         }
         else{
             //let id = ObjectId(o.body.movieId);
-            const = o.body.movieId;
-            Movie.findOne({_id = id}, function(err, movie) => {
-            if (!movie){
-                    return res.status(404).send({success: false, msg: "Review must have a valid movie Id"});
-                }
-            else{
-            var review = new Review();
-            
-            review.movieId = o.body.movieId;
-            review.username = o.body.username;
-            review.review = o.body.review;
-            review.rating = o.body.rating;
+            const movid = o.body.movieId;
+            Movie.findOne({_id: movid}, function(err, movie) => {
+                if (!movie){
+                        return res.status(404).send({success: false, msg: "Review must have a valid movie Id"});
+                    }
+                else{
+                var review = new Review();
+                
+                review.movieId = o.body.movieId;
+                review.username = o.body.username;
+                review.review = o.body.review;
+                review.rating = o.body.rating;
 
-            review.save(function(err){
-                if (err) {
-                        return res.json(err);
-                }
-            })
-            
-            o.status = 200;
-            o.message = 'Review created!';
-            o.query = o.body;
-            //o.env = o.key;
-            res.json(o);
-        }
+                review.save(function(err){
+                    if (err) {
+                            return res.json(err);
+                    }
+                })
+                
+                o.status = 200;
+                o.message = 'Review created!';
+                o.query = o.body;
+                //o.env = o.key;
+                res.json(o);
+            }
     })
 }
     })
