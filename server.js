@@ -155,7 +155,7 @@ router.route('/movies/:title')
         }
         var o = getJSONObjectForMovieRequirement(req);
         if (req.query.reviews == "true"){
-            Movies.aggregate(([
+            Movie.aggregate(([
                 {
                     $match: { title: req.params.title}
                 },
@@ -189,12 +189,13 @@ router.route('/movies/:title')
         Movie.find({title: req.params.title}, function(err, movies){
             if (err) throw err;
             if (movies.length==0){
-            res.json({success: false, msg: 'No movie by that name exists.', status: 404});
+                res.json({success: false, msg: 'No movie by that name exists.', status: 404});
             }
-            movies.status = 200;
-                
-            res.json(movies);
-        
+            else{
+                movies.status = 200;
+                    
+                res.json(movies);
+            }
         })
     }
     })
@@ -253,7 +254,7 @@ router.route('/movies/:id')
         var o = getJSONObjectForMovieRequirement(req);
 
         if (req.query.reviews == "true"){
-            Movies.aggregate(([
+            Movie.aggregate(([
                 {
                     $match: { _id: req.params.id}
                 },
