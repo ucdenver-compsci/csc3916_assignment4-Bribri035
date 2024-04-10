@@ -322,8 +322,8 @@ router.route('/reviews')
             return res.status(400).send({success: false, msg: 'Review needs rating 0-5'});
         }
         else{
-            let id = ObjectId(o.body.movieId);
-            movie = Movie.findOne(_id = id);
+            //let id = ObjectId(o.body.movieId);
+            movie = Movie.findOne(_id = o.body.movieId);
             if (!movie){
                     return res.status(404).send({success: false, msg: "Review must have a valid movie Id"})
                 }
