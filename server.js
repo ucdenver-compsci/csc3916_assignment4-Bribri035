@@ -323,10 +323,10 @@ router.route('/reviews')
         }
         else{
             movie = Movie.findOne(_id = o.body.movieId)
-                if (!movie){
+            if (!movie){
                     return res.status(404).send({success: false, msg: "Review must have a valid movie Id"})
                 }
-            
+            else{
             var review = new Review();
             
             review.movieId = o.body.movieId;
@@ -346,6 +346,7 @@ router.route('/reviews')
             //o.env = o.key;
             res.json(o);
         }
+    }
     })
 
     
