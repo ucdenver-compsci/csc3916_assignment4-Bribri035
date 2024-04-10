@@ -112,6 +112,15 @@ router.route('/movies')
         if (o.body.actors=="") {
             return res.status(400).send({success: false, msg: 'Movie needs actors'});
         }
+        if (o.body.title=="") {
+            return res.status(400).send({success: false, msg: 'Movie needs a title'});
+        }
+        if (o.body.releaseDate=="") {
+            return res.status(400).send({success: false, msg: 'Movie needs a release date'});
+        }
+        if (o.body.genre=="") {
+            return res.status(400).send({success: false, msg: 'Movie needs a genre'});
+        }
         else{
             var move = new Movie();
             move.title=o.body.title;
@@ -137,7 +146,7 @@ router.route('/movies')
     })
     ;
 
-router.route('/movies/:movieparameter')
+router.route('/movies/:title')
     .get(authJwtController.isAuthenticated, (req,res) => {
         //console.log(req.body);
         //es = res.status(200);
@@ -145,46 +154,6 @@ router.route('/movies/:movieparameter')
             res = res.type(req.get('Content-Type'));
         }
         var o = getJSONObjectForMovieRequirement(req);
-        if (req.query.id){
-        if (req.query.reviews == true){
-            Movies.aggregate(([
-                {
-                    $match: { _id: o.body.id}
-                },
-                {
-                    $lookup:{
-                        from: 'Reviews',
-                        localField: '_id',
-                        foreignField: 'movieId',
-                        as: 'reviews'
-                    }
-                },
-
-                {
-                    $addFields:{
-                        average_rating: { $avg: '$reviews.rating'}
-                    }
-                },
-
-                {
-                    $sort: { average_rating: -1 }
-                }
-            ])).exec((err, movies) => {
-                res.json(movies)
-            })
-        }
-        
-        else{
-        Movie.find({_id: o.body.id}, function(err, movies){
-            if (err) throw err;
-            movies.status = 200;
-                
-            res.json(movies);
-        
-        })
-    }
-}
-    else{
         if (req.query.reviews == true){
             Movies.aggregate(([
                 {
@@ -221,7 +190,6 @@ router.route('/movies/:movieparameter')
             res.json(movies);
         
         })
-    }
     }
     })
 
@@ -283,6 +251,54 @@ router.route('/movies/:movieparameter')
         res.status(405).send({ message: "HTTP method not supported."});
     })
     ;
+
+router.route('/movies/:id')
+    .get(authJwtController.isAuthenticated, (req,res) => {
+        //console.log(req.body);
+        //es = res.status(200);
+        if (req.get('Content-Type')) {
+            res = res.type(req.get('Content-Type'));
+        }
+        var o = getJSONObjectForMovieRequirement(req);
+
+        if (req.query.reviews == true){
+            Movies.aggregate(([
+                {
+                    $match: { _id: o.body.id}
+                },
+                {
+                    $lookup:{
+                        from: 'Reviews',
+                        localField: '_id',
+                        foreignField: 'movieId',
+                        as: 'reviews'
+                    }
+                },
+
+                {
+                    $addFields:{
+                        average_rating: { $avg: '$reviews.rating'}
+                    }
+                },
+
+                {
+                    $sort: { average_rating: -1 }
+                }
+            ])).exec((err, movies) => {
+                res.json(movies)
+            })
+        }
+        
+        else{
+        Movie.find({_id: o.body.id}, function(err, movies){
+            if (err) throw err;
+            movies.status = 200;
+                
+            res.json(movies);
+        
+        })
+    }
+    })
 
 router.route('/reviews')
     .get((req,res) => {
