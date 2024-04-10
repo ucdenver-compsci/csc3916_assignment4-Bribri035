@@ -154,10 +154,10 @@ router.route('/movies/:title')
             res = res.type(req.get('Content-Type'));
         }
         var o = getJSONObjectForMovieRequirement(req);
-        if (req.query.reviews && req.query.reviews == true){
+        if (req.query.reviews == true){
             Movies.aggregate(([
                 {
-                    $match: { title: o.body.title}
+                    $match: { title: req.params.title}
                 },
                 {
                     $lookup:{
@@ -183,7 +183,7 @@ router.route('/movies/:title')
         }
         
         else{
-        Movie.find({title: req.query.title}, function(err, movies){
+        Movie.find({title: req.params.title}, function(err, movies){
             if (err) throw err;
             movies.status = 200;
                 
@@ -201,7 +201,7 @@ router.route('/movies/:title')
             res = res.type(req.get('Content-Type'));
         }
         var o = getJSONObjectForMovieRequirement(req);
-        Movies.findOneAndRemove({title: o.body.title}, function(err){
+        Movies.findOneAndRemove({title: req.params.title}, function(err){
             if (err) throw err;
             o.status = 200;
             o.message = "movie deleted";
@@ -220,7 +220,7 @@ router.route('/movies/:title')
         }
         var o = getJSONObjectForMovieRequirement(req);
 
-        Movies.findOne({ title:o.body.title }, function(err, movies){
+        Movies.findOne({ title:req.params.title }, function(err, movies){
             if (err) throw err;
             if (o.body.releaseDate){
                 movies.releaseDate = o.body.releaseDate;
@@ -264,7 +264,7 @@ router.route('/movies/:id')
         if (req.query.reviews == true){
             Movies.aggregate(([
                 {
-                    $match: { _id: o.body.id}
+                    $match: { _id: req.params.id}
                 },
                 {
                     $lookup:{
@@ -290,7 +290,7 @@ router.route('/movies/:id')
         }
         
         else{
-        Movie.find({_id: o.body.id}, function(err, movies){
+        Movie.find({_id: req.params.id}, function(err, movies){
             if (err) throw err;
             movies.status = 200;
                 
