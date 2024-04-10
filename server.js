@@ -154,7 +154,7 @@ router.route('/movies/:title')
             res = res.type(req.get('Content-Type'));
         }
         var o = getJSONObjectForMovieRequirement(req);
-        if (req.query.reviews == true){
+        if (req.query.reviews && req.query.reviews == true){
             Movies.aggregate(([
                 {
                     $match: { title: o.body.title}
@@ -183,7 +183,7 @@ router.route('/movies/:title')
         }
         
         else{
-        Movie.find({title: o.body.title}, function(err, movies){
+        Movie.find({title: req.query.title}, function(err, movies){
             if (err) throw err;
             movies.status = 200;
                 
