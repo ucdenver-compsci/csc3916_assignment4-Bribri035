@@ -220,21 +220,8 @@ router.route('/movies/:title')
         }
         var o = getJSONObjectForMovieRequirement(req);
 
-        Movies.findOne({ title:req.params.title }, function(err, movies){
+        Movies.findOneAndUpdate({ title:req.params.title }, {actors: o.body.actors, genre: o.body.genre, releaseDate: o.body.releaseDate }, function(err){
             if (err) throw err;
-            if (o.body.releaseDate){
-                movies.releaseDate = o.body.releaseDate;
-            }
-            else if (o.body.genre){
-                movies.genre = o.body.genre;
-            }
-            else if (o.body.actors){
-                movies.actors = o.body.actors;
-            }
-            movies.save(function(err){
-                if (err) {
-                    return res.json(err);
-            }
             });
             o.status = 200;
             o.message = "movie updated";
