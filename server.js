@@ -154,7 +154,7 @@ router.route('/movies/:title')
             res = res.type(req.get('Content-Type'));
         }
         var o = getJSONObjectForMovieRequirement(req);
-        if (req.query.reviews == true){
+        if (req.query.reviews == "true"){
             Movies.aggregate(([
                 {
                     $match: { title: req.params.title}
@@ -252,7 +252,7 @@ router.route('/movies/:id')
         }
         var o = getJSONObjectForMovieRequirement(req);
 
-        if (req.query.reviews == true){
+        if (req.query.reviews == "true"){
             Movies.aggregate(([
                 {
                     $match: { _id: req.params.id}
@@ -289,10 +289,11 @@ router.route('/movies/:id')
             if (movies.length==0){
                 res.json({success: false, msg: 'No movie by that id exists.', status: 404});
                 }
+            else{
             movies.status = 200;
                 
             res.json(movies);
-        
+            }
         })
     }
     })
