@@ -200,13 +200,14 @@ router.route('/movies/:title')
     })
 
 
-    .delete(authController.isAuthenticated, (req, res) => {
+    .delete(authJwtController.isAuthenticated, (req, res) => {
         //console.log(req.body);
         //es = res.status(200);
         if (req.get('Content-Type')) {
             res = res.type(req.get('Content-Type'));
         }
         var o = getJSONObjectForMovieRequirement(req);
+
         Movies.findOneAndRemove({title: req.params.title}, function(err){
             if (err) throw err;
             o.status = 200;
