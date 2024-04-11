@@ -324,11 +324,10 @@ router.route('/reviews')
         else{
             //let id = ObjectId(o.body.movieId);
             const movid = o.body.movieId;
-            Movie.findOne({_id: movid}, function(err, movie) => {
+            Movie.find({_id: movid}, function(err, movie){
                 if (!movie){
                         return res.status(404).send({success: false, msg: "Review must have a valid movie Id"});
-                    }
-                else{
+                }else{
                 var review = new Review();
                 
                 review.movieId = o.body.movieId;
