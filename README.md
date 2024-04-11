@@ -65,3 +65,9 @@ Leverage the Async.js library or mongo $lookup aggregation capability to join th
 - https://cloud.google.com/appengine/docs/flexible/nodejs/integrating-with-analytics
 - https://caolan.github.io/async/index.html
 - https://support.google.com/analytics/answer/2709829
+
+###Added stuff
+- Has a couple of different routes and allows reviews to be true in all single movie routes.
+- postman link
+  [<img src="https://run.pstmn.io/button.svg" alt="Run In Postman" style="width: 128px; height: 32px;">](https://app.getpostman.com/run-collection/32404864-6e8eb14f-0ed9-4d2a-a403-ae0134921f24?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D32404864-6e8eb14f-0ed9-4d2a-a403-ae0134921f24%26entityType%3Dcollection%26workspaceId%3Db939c5cc-8934-44a9-bb33-f4b132b267ae#?env%5BHW%204%5D=W3sia2V5IjoidXNlciIsInZhbHVlIjoiIiwiZW5hYmxlZCI6dHJ1ZSwidHlwZSI6ImFueSIsInNlc3Npb25WYWx1ZSI6IjA3OTViNjQxLWY0YWItNGUwMi05NDUwLWFiNzRmNzk0YzQ3NiIsInNlc3Npb25JbmRleCI6MH0seyJrZXkiOiJwYXNzIiwidmFsdWUiOiIiLCJlbmFibGVkIjp0cnVlLCJ0eXBlIjoiYW55Iiwic2Vzc2lvblZhbHVlIjoiRGVnTWlSRlRMZ3JOOFBOIiwic2Vzc2lvbkluZGV4IjoxfSx7ImtleSI6IkpXVCIsInZhbHVlIjoiIiwiZW5hYmxlZCI6dHJ1ZSwidHlwZSI6ImFueSIsInNlc3Npb25WYWx1ZSI6IkpXVC4uLiIsInNlc3Npb25JbmRleCI6Mn1d)
+  no environment settings need changed
